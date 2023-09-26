@@ -4,8 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:novalabs/camera.dart';
-import 'package:novalabs/presistant.dart';
-import 'package:novalabs/signin.dart';
+
+import 'package:novalabs/Signin.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'firebase_options.dart';
@@ -25,7 +25,11 @@ class _ProfileState extends State<Profile> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Icon(Icons.person_pin_circle_rounded,size: 33,color: Color.fromARGB(255,241,194,125),),
+            child: Icon(
+              Icons.person_pin_circle_rounded,
+              size: 33,
+              color: Color.fromARGB(255, 241, 194, 125),
+            ),
           )
         ],
         elevation: 0,
@@ -33,35 +37,69 @@ class _ProfileState extends State<Profile> {
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
-        backgroundColor:Colors.white,
+        backgroundColor: Colors.white,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("N",style: GoogleFonts.aBeeZee(textStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 30)),),
-            Image.asset("images/nova.png",height: 30,width: 30,),
-            Text("va", style:GoogleFonts.kanit(textStyle:TextStyle(fontSize: 25), ) ),
+            Text(
+              "N",
+              style: GoogleFonts.aBeeZee(
+                  textStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+            ),
+            Image.asset(
+              "images/nova.png",
+              height: 30,
+              width: 30,
+            ),
+            Text("va",
+                style: GoogleFonts.kanit(
+                  textStyle: TextStyle(fontSize: 25),
+                )),
             Padding(
-              padding: const EdgeInsets.only(top:8.0),
-              child: Text("l",style:GoogleFonts.sacramento(textStyle:TextStyle(fontSize: 27,fontWeight: FontWeight.bold,color: Colors.amber),),),
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                "l",
+                style: GoogleFonts.sacramento(
+                  textStyle: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber),
+                ),
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top:8.0),
-              child: Text("a",style:GoogleFonts.sacramento(textStyle:TextStyle(fontSize: 27,fontWeight: FontWeight.bold,color: Colors.redAccent),),),
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                "a",
+                style: GoogleFonts.sacramento(
+                  textStyle: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.redAccent),
+                ),
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top:8.0),
-              child: Text("bs",style:GoogleFonts.sacramento(textStyle:TextStyle(fontSize: 27,fontWeight: FontWeight.bold,color: Colors.blue),),),
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                "bs",
+                style: GoogleFonts.sacramento(
+                  textStyle: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
+                ),
+              ),
             ),
-
           ],
         ),
       ),
-      body:Center(
-        child:
-        TextButton(
-          onPressed: ()async{
+      body: Center(
+        child: TextButton(
+          onPressed: () async {
             await FirebaseAuth.instance.signOut();
             PersistentNavBarNavigator.pushNewScreen(
               context,
@@ -69,7 +107,8 @@ class _ProfileState extends State<Profile> {
               withNavBar: false,
               pageTransitionAnimation: PageTransitionAnimation.fade,
             );
-          }, child: Text("Logout"),
+          },
+          child: Text("Logout"),
         ),
       ),
     );

@@ -18,6 +18,8 @@ import 'package:novalabs/profilw.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import 'ShowImage.dart';
+
 final user = FirebaseAuth.instance.currentUser;
 
 // A widget that displays the picture taken by the user.
@@ -33,7 +35,7 @@ class DisplayPictureScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Center(child: const Text('Save report'))),
-      // The image is stored as a file on the device. Use the `Image.file`
+      // The image is stored as a file on the device. Use the Image.file
       // constructor with the given path to display the image.
       body: SingleChildScrollView(
         child: Column(
@@ -393,18 +395,25 @@ class TakePictureScreen extends StatefulWidget {
 class TakePictureScreenState extends State<TakePictureScreen>
     with TickerProviderStateMixin {
   late CameraController _controller;
+  late double minzoomoffset = 1;
+  late double maxzoomoffset = 10;
   late FutureOr<void> _initializeControllerFuture;
   late TabController tabController;
   TextEditingController email = new TextEditingController();
   TextEditingController pass = new TextEditingController();
   TextEditingController conpass = new TextEditingController();
   int currentTabIndex = 0;
-
+  double _currentZoomOffset = 1;
   @override
   void initState() {
     super.initState();
-    _controller = CameraController(widget.cameras![0], ResolutionPreset.max);
+    _controller = CameraController(widget.cameras![0], ResolutionPreset.high,
+        enableAudio: false);
+    // minzoomoffset=_controller.getMaxZoomLevel();
+    // minzoomoffset=_controller.getMinZoomLevel();
     _controller.initialize().then((_) {
+      // Set autofocus mode
+      _controller.setFlashMode(FlashMode.auto);
       if (!mounted) {
         return;
       }
@@ -430,91 +439,6 @@ class TakePictureScreenState extends State<TakePictureScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-                onPressed: () {
-                  PersistentNavBarNavigator.pushNewScreen(
-                    context,
-                    screen: Profile(),
-                    withNavBar: true,
-                    pageTransitionAnimation: PageTransitionAnimation.fade,
-                  );
-                },
-                icon: Icon(
-                  Icons.person_pin_circle_rounded,
-                  size: 33,
-                  color: Color.fromARGB(255, 241, 194, 125),
-                )),
-          )
-        ],
-        elevation: 0,
-
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Colors.white,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "N",
-              style: GoogleFonts.aBeeZee(
-                  textStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-            ),
-            Image.asset(
-              "images/nova.png",
-              height: 30,
-              width: 30,
-            ),
-            Text("va",
-                style: GoogleFonts.kanit(
-                  textStyle: TextStyle(fontSize: 25),
-                )),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                "l",
-                style: GoogleFonts.sacramento(
-                  textStyle: TextStyle(
-                      fontSize: 27,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.amber),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                "a",
-                style: GoogleFonts.sacramento(
-                  textStyle: TextStyle(
-                      fontSize: 27,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.redAccent),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                "bs",
-                style: GoogleFonts.sacramento(
-                  textStyle: TextStyle(
-                      fontSize: 27,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -522,7 +446,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
               height: 30,
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(0),
               child: Container(
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
@@ -538,6 +462,19 @@ class TakePictureScreenState extends State<TakePictureScreen>
                     : CircularProgressIndicator(),
               ),
             ),
+            Slider(
+                value: _currentZoomOffset,
+                min: minzoomoffset,
+                max: maxzoomoffset,
+                label: _currentZoomOffset.toString(),
+                onChanged: (newv) {
+                  setState(() {
+                    _currentZoomOffset = newv;
+                    print(_currentZoomOffset);
+                    if (newv > minzoomoffset && newv < maxzoomoffset)
+                      _controller.setZoomLevel(newv);
+                  });
+                }),
           ],
         ),
       ),
@@ -549,60 +486,30 @@ class TakePictureScreenState extends State<TakePictureScreen>
           //!email.text.isEmpty && !pass.text.isEmpty
           if (email.text.isEmpty && pass.text.isEmpty) {
             try {
-              // Attempt to take a picture and get the file `image`
+              // Attempt to take a picture and get the file image
               // where it was saved.
+
               final image = await _controller.takePicture();
-              var request;
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ShowImage(imagePath: image.path)));
 
-              request = http.MultipartRequest(
-                  'POST', Uri.parse('http://192.168.192.64:8000/upload'))
-                ..files.add(
-                    await http.MultipartFile.fromPath('image', image.path));
-
-              var response = await request.send();
-
-              if (response.statusCode == 200) {
-                // Handle success
-
-                Map<String, dynamic>? dataMap = (await response.stream
-                    .transform(utf8.decoder)
-                    .transform(json.decoder)
-                    .first) as Map<String, dynamic>?;
-
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => DisplayPictureScreen(
-                          imagePath: image.path, result: dataMap)),
-                );
-
-                // showDialog<String>(
-                //   context: context,
-                //   builder: (BuildContext context) => AlertDialog(
-                //     title: Text('there is ${dataMap?["result"][0]}'),
-                //
-                //     actions: <Widget>[
-                //       TextButton(
-                //         onPressed: () => Navigator.pop(context, 'Cancel'),
-                //         child: const Text('Cancel'),
-                //       ),
-                //       TextButton(
-                //         onPressed: () => Navigator.pop(context, 'OK'),
-                //         child: const Text('OK'),
-                //       ),
-                //     ],
-                //   ),
-                // );
-
-              } else {
-                // Handle error
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: Colors.greenAccent,
-                    content: Text('Failed to get result, try again!'),
-                  ),
-                );
-              }
-              // Ensure that the camera is initialized.
+              // showDialog<String>(
+              //   context: context,
+              //   builder: (BuildContext context) => AlertDialog(
+              //     title: Text('there is ${dataMap?["result"][0]}'),
+              //
+              //     actions: <Widget>[
+              //       TextButton(
+              //         onPressed: () => Navigator.pop(context, 'Cancel'),
+              //         child: const Text('Cancel'),
+              //       ),
+              //       TextButton(
+              //         onPressed: () => Navigator.pop(context, 'OK'),
+              //         child: const Text('OK'),
+              //       ),
+              //     ],
+              //   ),
+              // );
 
               if (!mounted) return;
             } catch (e) {
@@ -622,7 +529,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
         },
         icon: const Icon(Icons.camera_alt),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 

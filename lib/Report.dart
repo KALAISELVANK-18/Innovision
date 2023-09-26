@@ -1,25 +1,18 @@
-import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:novalabs/main.dart';
-import 'package:novalabs/profilw.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:novalabs/Signin.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class Report extends StatefulWidget {
+  const Report({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Report> createState() => _ReportState();
 }
 
-class _HomeState extends State<Home> {
-  // Future<void>? _initializeVideoPlayerFuture;
-
+class _ReportState extends State<Report> {
   String formatTimestamp(int timestamp) {
     var format = new DateFormat('dd-MMM-yyyy');
     var date = new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
@@ -40,73 +33,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Colors.white,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "N",
-              style: GoogleFonts.aBeeZee(
-                  textStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-            ),
-            Image.asset(
-              "images/nova.png",
-              height: 30,
-              width: 30,
-            ),
-            Text("va",
-                style: GoogleFonts.kanit(
-                  textStyle: TextStyle(fontSize: 25),
-                )),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                "l",
-                style: GoogleFonts.sacramento(
-                  textStyle: TextStyle(
-                      fontSize: 27,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.amber),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                "a",
-                style: GoogleFonts.sacramento(
-                  textStyle: TextStyle(
-                      fontSize: 27,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.redAccent),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                "bs",
-                style: GoogleFonts.sacramento(
-                  textStyle: TextStyle(
-                      fontSize: 27,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

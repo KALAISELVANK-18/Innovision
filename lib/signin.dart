@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:novalabs/presistant.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:novalabs/signup.dart';
 
-
+import 'main.dart';
 
 class Signin extends StatefulWidget {
   const Signin({Key? key}) : super(key: key);
@@ -14,13 +14,12 @@ class Signin extends StatefulWidget {
 }
 
 class _SigninState extends State<Signin> {
-
   @override
   Widget build(BuildContext context) {
-    TextEditingController email=new TextEditingController();
-    TextEditingController pass=new TextEditingController();
+    TextEditingController email = new TextEditingController();
+    TextEditingController pass = new TextEditingController();
     return WillPopScope(
-      onWillPop: ()async=>false,
+      onWillPop: () async => false,
       child: Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         body: SingleChildScrollView(
@@ -32,7 +31,6 @@ class _SigninState extends State<Signin> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 Container(
                     height: 200,
                     width: 200,
@@ -43,22 +41,57 @@ class _SigninState extends State<Signin> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("N",style: GoogleFonts.aBeeZee(textStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 35)),),
-                      Image.asset("images/nova.png",height: 35,width: 35,),
-                      Text("va", style:GoogleFonts.kanit(textStyle:TextStyle(fontSize: 30), ) ),
+                      Text(
+                        "N",
+                        style: GoogleFonts.aBeeZee(
+                            textStyle: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 35)),
+                      ),
+                      Image.asset(
+                        "images/nova.png",
+                        height: 35,
+                        width: 35,
+                      ),
+                      Text("va",
+                          style: GoogleFonts.kanit(
+                            textStyle: TextStyle(fontSize: 30),
+                          )),
                       Padding(
-                        padding: const EdgeInsets.only(top:8.0),
-                        child: Text("l",style:GoogleFonts.sacramento(textStyle:TextStyle(fontSize: 32,fontWeight: FontWeight.bold,color: Colors.amber),),),
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          "l",
+                          style: GoogleFonts.sacramento(
+                            textStyle: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.amber),
+                          ),
+                        ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top:8.0),
-                        child: Text("a",style:GoogleFonts.sacramento(textStyle:TextStyle(fontSize: 32,fontWeight: FontWeight.bold,color: Colors.redAccent),),),
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          "a",
+                          style: GoogleFonts.sacramento(
+                            textStyle: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.redAccent),
+                          ),
+                        ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top:8.0),
-                        child: Text("bs",style:GoogleFonts.sacramento(textStyle:TextStyle(fontSize: 32,fontWeight: FontWeight.bold,color: Colors.blue),),),
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          "bs",
+                          style: GoogleFonts.sacramento(
+                            textStyle: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue),
+                          ),
+                        ),
                       ),
-
                     ],
                   ),
                 ),
@@ -109,7 +142,7 @@ class _SigninState extends State<Signin> {
                     'Sign In',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () async{
+                  onPressed: () async {
                     try {
                       await FirebaseAuth.instance.signInWithEmailAndPassword(
                         email: email.text,
@@ -117,20 +150,13 @@ class _SigninState extends State<Signin> {
                       );
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) =>  MyHomePage1(),
+                          builder: (context) => HomePage(),
                         ),
                       );
-
-
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'user-not-found') {
-
-                      } else if (e.code == 'wrong-password') {
-
-                      }
+                      } else if (e.code == 'wrong-password') {}
                     }
-
-
                   },
                 )),
             Padding(
@@ -158,35 +184,40 @@ class _SigninState extends State<Signin> {
             //   ],
             // ),
 
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 Center(
-
                   child: Padding(
-
                     padding: EdgeInsets.only(top: 2),
                     child: Row(
                       children: [
                         Text('Not a user',
-                            style: GoogleFonts.poppins(fontSize: 15, color: Colors.black)),
-                        TextButton(onPressed:(){
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const Signup(),
-                            ),
-                          );
-                        },
-                          child: Text('Signup here',
-                            style: GoogleFonts.poppins(fontSize: 17, color: Colors.deepPurpleAccent,fontWeight: FontWeight.bold),),
+                            style: GoogleFonts.poppins(
+                                fontSize: 15, color: Colors.black)),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const Signup(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Signup here',
+                            style: GoogleFonts.poppins(
+                                fontSize: 17,
+                                color: Colors.deepPurpleAccent,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-
               ],
             ),
           ]),
