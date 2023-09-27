@@ -3,6 +3,7 @@ import 'dart:io'; // Import the 'dart:io' library
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:novalabs/Detials.dart';
 
 import 'camera.dart';
 
@@ -57,8 +58,8 @@ class _ShowImageState extends State<ShowImage> {
                     onPressed: () async {
                       var request;
 
-                      request = http.MultipartRequest('POST',
-                          Uri.parse('http://192.168.151.64:8000/upload'))
+                      request = http.MultipartRequest(
+                          'POST', Uri.parse('http://192.168.91.24:8000/upload'))
                         ..files.add(await http.MultipartFile.fromPath(
                             'image', widget.imagePath));
 
@@ -73,7 +74,7 @@ class _ShowImageState extends State<ShowImage> {
                             .first) as Map<String, dynamic>?;
 
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => DisplayPictureScreen(
+                            builder: (context) => Details(
                                 imagePath: widget.imagePath, result: dataMap)));
                       } else {
                         // Handle error

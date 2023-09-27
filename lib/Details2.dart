@@ -1,45 +1,28 @@
 import 'dart:io';
-import 'dart:typed_data';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
+import 'package:novalabs/Maps.dart';
 
-import 'Maps.dart';
-
-class Details extends StatefulWidget {
+class Details2 extends StatelessWidget {
   final String imagePath;
-  final Map<String, dynamic>? result;
-  Details({super.key, required this.imagePath, required this.result});
-
-  @override
-  State<Details> createState() => _DetailsState();
-}
-
-class _DetailsState extends State<Details> {
   int post = 0;
-  late List<int> intList;
+  final List<DocumentSnapshot<Object?>> result;
+  int index;
+  Details2(
+      {super.key,
+      required this.imagePath,
+      required this.result,
+      required this.index});
 
   final List<String> sliderItems = [
     "list.png",
-    "report.png",
+    "3dmap.jpg",
   ];
-  late Uint8List imageData;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Extract and convert the dynamic list to a list of integers
-    // List<dynamic>? thermalData = json.decode(widget.result!["thermal"]);
-    // intList = thermalData?.map<int>((e) => e as int).toList() ?? [];
-
-    // // Initialize the Uint8List from the list of integers
-    // imageData = Uint8List.fromList(intList);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,42 +81,30 @@ class _DetailsState extends State<Details> {
                             autoPlayCurve: Curves.fastOutSlowIn,
                             viewportFraction: 0.8,
                           ),
-                          items: [
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 5.0, vertical: 10),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: FileImage(
-                                    File(widget.imagePath),
+                          items: sliderItems.map((item) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 5.0, vertical: 10),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        imagePath,
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  fit: BoxFit.cover,
-                                ),
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(),
-                            ),
-                            // (widget.result!["diseases"] && imageData.isNotEmpty)
-                            //     ? Container(
-                            //         width: MediaQuery.of(context).size.width,
-                            //         margin: EdgeInsets.symmetric(
-                            //             horizontal: 5.0, vertical: 10),
-                            //         decoration: BoxDecoration(
-                            //           image: DecorationImage(
-                            //             image: MemoryImage(imageData, scale: 2),
-                            //             fit: BoxFit.cover,
-                            //           ),
-                            //           color: Colors.white,
-                            //           borderRadius: BorderRadius.circular(10),
-                            //         ),
-                            //         child: Center(),
-                            //       )
-                            //     : SizedBox()
-                          ],
+                                  child: Center(),
+                                );
+                              },
+                            );
+                          }).toList(),
                         ),
-                        (widget.result!['result'].length > 1)
+                        (result[index]["diseases"])
                             ? Padding(
                                 padding: const EdgeInsets.all(1),
                                 child: Column(
@@ -174,9 +145,9 @@ class _DetailsState extends State<Details> {
                                                 x: 0,
                                                 barRods: [
                                                   BarChartRodData(
-                                                      y: double.parse(widget
-                                                                  .result![
-                                                              "result"][0][1]) *
+                                                      y: double.parse(result[
+                                                                  index]
+                                                              ["accuracy1"]) *
                                                           100,
                                                       colors: [Colors.blue]),
                                                 ],
@@ -185,9 +156,9 @@ class _DetailsState extends State<Details> {
                                                 x: 1,
                                                 barRods: [
                                                   BarChartRodData(
-                                                      y: double.parse(widget
-                                                                  .result![
-                                                              "result"][1][1]) *
+                                                      y: double.parse(result[
+                                                                  index]
+                                                              ["accuracy2"]) *
                                                           100,
                                                       colors: [Colors.green]),
                                                 ],
@@ -196,9 +167,9 @@ class _DetailsState extends State<Details> {
                                                 x: 2,
                                                 barRods: [
                                                   BarChartRodData(
-                                                      y: double.parse(widget
-                                                                  .result![
-                                                              "result"][2][1]) *
+                                                      y: double.parse(result[
+                                                                  index]
+                                                              ["accuracy3"]) *
                                                           100,
                                                       colors: [Colors.orange]),
                                                 ],
@@ -218,16 +189,18 @@ class _DetailsState extends State<Details> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
                                         children: [
-                                          Text(
-                                            "Diagnosis:  ",
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600),
+                                          Container(
+                                            child: Text(
+                                              "Diagnosis:  ",
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
                                           ),
                                           Container(
-                                            width: 250,
+                                            width: 230,
                                             child: Text(
-                                              widget.result!["result"][0][0],
+                                              result[index]["title"],
                                               softWrap: true,
                                               style: TextStyle(
                                                   fontSize: 18,
@@ -267,11 +240,12 @@ class _DetailsState extends State<Details> {
                                         children: [
                                           OutlinedButton.icon(
                                             onPressed: () {
-                                              // Navigator.of(context).push(
-                                              //   MaterialPageRoute(
-                                              //     builder: (context) => Myapps(),
-                                              //   ),
-                                              // );
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Myapps(),
+                                                ),
+                                              );
                                             },
                                             icon: Icon(Icons.location_city),
                                             label: Text(
@@ -441,110 +415,6 @@ class _DetailsState extends State<Details> {
                                               fontSize:
                                                   16), // Enable text wrapping
                                         ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 20, horizontal: 60),
-                                      child: Row(
-                                        children: [
-                                          OutlinedButton.icon(
-                                            onPressed: () async {
-                                              if (post == 0) {
-                                                post = 1;
-                                                try {
-                                                  final c =
-                                                      DateTime.timestamp();
-
-                                                  final refe = FirebaseStorage
-                                                      .instance
-                                                      .ref()
-                                                      .child(FirebaseAuth
-                                                          .instance
-                                                          .currentUser!
-                                                          .uid)
-                                                      .child(c.toString())
-                                                      .child("tum");
-
-                                                  await refe.putFile(
-                                                      File(widget.imagePath),
-                                                      SettableMetadata(
-                                                          contentType:
-                                                              "image/png"));
-
-                                                  final downloadUrl1 =
-                                                      await FirebaseStorage
-                                                          .instance
-                                                          .ref()
-                                                          .child(FirebaseAuth
-                                                              .instance
-                                                              .currentUser!
-                                                              .uid)
-                                                          .child(c.toString())
-                                                          .child("tum")
-                                                          .getDownloadURL();
-                                                  final String url1 =
-                                                      downloadUrl1.toString();
-
-                                                  await FirebaseFirestore
-                                                      .instance
-                                                      .collection(FirebaseAuth
-                                                          .instance
-                                                          .currentUser!
-                                                          .email
-                                                          .toString())
-                                                      .doc("posts")
-                                                      .collection("posts")
-                                                      .add({
-                                                    "time":
-                                                        DateTime.timestamp(),
-                                                    "uid": FirebaseAuth.instance
-                                                        .currentUser!.uid,
-                                                    "title":
-                                                        widget.result!["result"]
-                                                            [0][0],
-                                                    "title2":
-                                                        widget.result!["result"]
-                                                            [1][0],
-                                                    "title3":
-                                                        widget.result!["result"]
-                                                            [2][0],
-                                                    "picture_url": url1,
-                                                    "accuracy1": widget
-                                                            .result!["resulyt"]
-                                                        [0][1],
-                                                    "accuracy2":
-                                                        widget.result!["result"]
-                                                            [1][1],
-                                                    "accuracy3": widget
-                                                        .result!["result"][2][1]
-                                                  });
-                                                  post = 2;
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      backgroundColor:
-                                                          Colors.greenAccent,
-                                                      content: Text('Saved!'),
-                                                    ),
-                                                  );
-
-                                                  Navigator.pop(context);
-                                                  Navigator.pop(context);
-                                                } catch (error) {
-                                                  post = 0;
-                                                  print(post);
-                                                  print(error);
-                                                }
-                                              }
-                                            },
-                                            icon: Icon(Icons.location_city),
-                                            label: Text(
-                                              "Save",
-                                              style: TextStyle(fontSize: 18),
-                                            ),
-                                          )
-                                        ],
                                       ),
                                     ),
                                   ],

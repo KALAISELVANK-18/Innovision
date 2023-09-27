@@ -446,7 +446,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
               height: 30,
             ),
             Padding(
-              padding: const EdgeInsets.all(0),
+              padding: const EdgeInsets.all(10),
               child: Container(
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
@@ -462,72 +462,90 @@ class TakePictureScreenState extends State<TakePictureScreen>
                     : CircularProgressIndicator(),
               ),
             ),
-            Slider(
-                value: _currentZoomOffset,
-                min: minzoomoffset,
-                max: maxzoomoffset,
-                label: _currentZoomOffset.toString(),
-                onChanged: (newv) {
-                  setState(() {
-                    _currentZoomOffset = newv;
-                    print(_currentZoomOffset);
-                    if (newv > minzoomoffset && newv < maxzoomoffset)
-                      _controller.setZoomLevel(newv);
-                  });
-                }),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('-', style: TextStyle(fontSize: 40)),
+                  Expanded(
+                    child: Slider(
+                      value: _currentZoomOffset,
+                      min: minzoomoffset,
+                      max: maxzoomoffset,
+                      onChanged: (newv) {
+                        setState(() {
+                          _currentZoomOffset = newv;
+                          print(_currentZoomOffset);
+                          if (newv > minzoomoffset && newv < maxzoomoffset)
+                            _controller.setZoomLevel(newv);
+                        });
+                      },
+                    ),
+                  ),
+                  Text(
+                    '+',
+                    style: TextStyle(fontSize: 30),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: Text("Click!"),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 30),
+        child: FloatingActionButton.extended(
+          label: Text("Click!"),
 
-        // Provide an onPressed callback.
-        onPressed: () async {
-          //!email.text.isEmpty && !pass.text.isEmpty
-          if (email.text.isEmpty && pass.text.isEmpty) {
-            try {
-              // Attempt to take a picture and get the file image
-              // where it was saved.
+          // Provide an onPressed callback.
+          onPressed: () async {
+            //!email.text.isEmpty && !pass.text.isEmpty
+            if (email.text.isEmpty && pass.text.isEmpty) {
+              try {
+                // Attempt to take a picture and get the file image
+                // where it was saved.
 
-              final image = await _controller.takePicture();
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ShowImage(imagePath: image.path)));
+                final image = await _controller.takePicture();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ShowImage(imagePath: image.path)));
 
-              // showDialog<String>(
-              //   context: context,
-              //   builder: (BuildContext context) => AlertDialog(
-              //     title: Text('there is ${dataMap?["result"][0]}'),
-              //
-              //     actions: <Widget>[
-              //       TextButton(
-              //         onPressed: () => Navigator.pop(context, 'Cancel'),
-              //         child: const Text('Cancel'),
-              //       ),
-              //       TextButton(
-              //         onPressed: () => Navigator.pop(context, 'OK'),
-              //         child: const Text('OK'),
-              //       ),
-              //     ],
-              //   ),
-              // );
+                // showDialog<String>(
+                //   context: context,
+                //   builder: (BuildContext context) => AlertDialog(
+                //     title: Text('there is ${dataMap?["result"][0]}'),
+                //
+                //     actions: <Widget>[
+                //       TextButton(
+                //         onPressed: () => Navigator.pop(context, 'Cancel'),
+                //         child: const Text('Cancel'),
+                //       ),
+                //       TextButton(
+                //         onPressed: () => Navigator.pop(context, 'OK'),
+                //         child: const Text('OK'),
+                //       ),
+                //     ],
+                //   ),
+                // );
 
-              if (!mounted) return;
-            } catch (e) {
-              // If an error occurs, log the error to the console.
-              print(e);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: const Text('Issue in connecting cameras'),
-                action: SnackBarAction(
-                  label: 'Undo',
-                  onPressed: () {
-                    // Some code to undo the change.
-                  },
-                ),
-              ));
+                if (!mounted) return;
+              } catch (e) {
+                // If an error occurs, log the error to the console.
+                print(e);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: const Text('Issue in connecting cameras'),
+                  action: SnackBarAction(
+                    label: 'Undo',
+                    onPressed: () {
+                      // Some code to undo the change.
+                    },
+                  ),
+                ));
+              }
             }
-          }
-        },
-        icon: const Icon(Icons.camera_alt),
+          },
+          icon: const Icon(Icons.camera_alt),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

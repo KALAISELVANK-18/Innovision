@@ -1,11 +1,13 @@
 import 'package:camera/camera.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:novalabs/Details2.dart';
 import 'package:novalabs/Detials.dart';
 import 'package:novalabs/HomePage.dart';
 import 'package:novalabs/Test.dart';
@@ -536,6 +538,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+  int _currentIndex1 = 0;
+
+  final List<String> images = [
+    "list.png",
+    "report.png",
+    "3dmap.jpg",
+  ];
 
   final List<String> sliderItems = [
     "list.png",
@@ -570,10 +579,63 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "AI Dermatologist",
-          softWrap: true,
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "N",
+              style: GoogleFonts.aBeeZee(
+                  textStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+            ),
+            Image.asset(
+              "images/nova.png",
+              height: 30,
+              width: 30,
+            ),
+            Text("va",
+                style: GoogleFonts.kanit(
+                  textStyle: TextStyle(fontSize: 25),
+                )),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                "l",
+                style: GoogleFonts.sacramento(
+                  textStyle: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                "a",
+                style: GoogleFonts.sacramento(
+                  textStyle: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.redAccent),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                "bs",
+                style: GoogleFonts.sacramento(
+                  textStyle: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       body: Container(
@@ -588,7 +650,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.only(top: 20),
                 child: Row(
                   children: [
                     // Padding(
@@ -676,7 +738,7 @@ class _HomePageState extends State<HomePage> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: Container(
-                    height: 1100,
+                    height: 1200,
                     width: MediaQuery.of(context).size.width * 1,
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(229, 235, 255, 1),
@@ -690,18 +752,22 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Early Detection ",
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            "Makes a Difference",
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.w600),
-                          ),
+                          Text("Early Detection ",
+                              style: GoogleFonts.roboto(
+                                  textStyle: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ))),
+                          Text("Makes a Difference",
+                              style: GoogleFonts.roboto(
+                                  textStyle: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ))
+                              // TextStyle(
+                              //       fontSize: 22, fontWeight: FontWeight.w600),
+                              //
+                              ),
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: Container(
@@ -729,22 +795,28 @@ class _HomePageState extends State<HomePage> {
                                           children: [
                                             Column(
                                               children: [
-                                                Text(
-                                                  "Our test can help you",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
+                                                Text("Our test can help you",
+                                                    style: GoogleFonts.roboto(
+                                                        textStyle: TextStyle(
                                                       fontSize: 19,
                                                       fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                Text(
-                                                  "to detect Melanoma.",
-                                                  style: TextStyle(
+                                                          FontWeight.w500,
                                                       color: Colors.white,
+                                                    ))),
+                                                Text("to detect Melanoma.",
+                                                    style: GoogleFonts.roboto(
+                                                        textStyle: TextStyle(
                                                       fontSize: 19,
                                                       fontWeight:
-                                                          FontWeight.w500),
-                                                ),
+                                                          FontWeight.w500,
+                                                      color: Colors.white,
+                                                    ))
+                                                    // TextStyle(
+                                                    //     color: Colors.white,
+                                                    //     fontSize: 19,
+                                                    //     fontWeight:
+                                                    //         FontWeight.w500),
+                                                    ),
                                               ],
                                             ),
                                             Padding(
@@ -762,24 +834,31 @@ class _HomePageState extends State<HomePage> {
                                   Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: Text(
-                                      "Finding melanoma at an early stage is crucial; Early detection can vastly increase your chances for cure.",
-                                      softWrap: true,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Color.fromRGBO(128, 128, 128, 1),
-                                      ),
-                                    ),
+                                        "Finding melanoma at an early stage is crucial; Early detection can vastly increase your chances for cure.",
+                                        softWrap: true,
+                                        style: GoogleFonts.roboto(
+                                            textStyle: TextStyle(
+                                          fontSize: 16,
+                                          color:
+                                              Color.fromRGBO(128, 128, 128, 1),
+                                        ))
+                                        // TextStyle(
+                                        //   fontSize: 16,
+                                        //   color: Color.fromRGBO(128, 128, 128, 1),
+                                        // ),
+                                        ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: Text(
-                                      "Most moles, brown spots and growths on the skin are harmless - but not always.",
-                                      softWrap: true,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Color.fromRGBO(147, 147, 147, 1),
-                                      ),
-                                    ),
+                                        "Most moles, brown spots and growths on the skin are harmless - but not always.",
+                                        softWrap: true,
+                                        style: GoogleFonts.roboto(
+                                            textStyle: TextStyle(
+                                          fontSize: 16,
+                                          color:
+                                              Color.fromRGBO(128, 128, 128, 1),
+                                        ))),
                                   ),
                                   OutlinedButton(
                                     onPressed: () {
@@ -788,8 +867,7 @@ class _HomePageState extends State<HomePage> {
                                     child: Text(
                                       "Read More",
                                       style: TextStyle(
-                                        fontSize: 14,
-                                      ),
+                                          fontSize: 16, color: Colors.black),
                                     ),
                                   ),
                                 ],
@@ -798,137 +876,157 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 10, left: 10),
-                            child: Text(
-                              "Your last scanning",
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                            child: Text("Your last scanning",
+                                style: GoogleFonts.roboto(
+                                    textStyle: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w600,
+                                ))),
                           ),
-                          Container(
-                            child: StreamBuilder<QuerySnapshot>(
-                              stream: FirebaseFirestore.instance
-                                  .collection(FirebaseAuth
-                                      .instance.currentUser!.email
-                                      .toString())
-                                  .doc("posts")
-                                  .collection("posts")
-                                  .snapshots(),
-                              builder: (context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasData && snapshot.data != null) {
-                                  List<DocumentSnapshot> nn =
-                                      snapshot.data!.docs;
-                                  // Calculate the index to get the last two items
-                                  int startIndex =
-                                      nn.length >= 2 ? nn.length - 2 : 0;
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Container(
+                              child: StreamBuilder<QuerySnapshot>(
+                                stream: FirebaseFirestore.instance
+                                    .collection(FirebaseAuth
+                                        .instance.currentUser!.email
+                                        .toString())
+                                    .doc("posts")
+                                    .collection("posts")
+                                    .snapshots(),
+                                builder: (context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (snapshot.hasData &&
+                                      snapshot.data != null) {
+                                    List<DocumentSnapshot> nn =
+                                        snapshot.data!.docs;
+                                    // Calculate the index to get the last two items
+                                    int startIndex =
+                                        nn.length >= 2 ? nn.length - 2 : 0;
 
-                                  return GridView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 10,
-                                    ),
-                                    itemCount: nn.length >= 2
-                                        ? 2
-                                        : nn.length, // Show the last two items or all if less than two
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      // Calculate the index based on the last two items
-                                      int itemIndex = startIndex + index;
+                                    return GridView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 10,
+                                      ),
+                                      itemCount: nn.length >= 2
+                                          ? 2
+                                          : nn.length, // Show the last two items or all if less than two
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        // Calculate the index based on the last two items
+                                        int itemIndex = startIndex + index;
 
-                                      return GestureDetector(
-                                        onTap: () {
-                                          // Navigate to a detailed view
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(0),
-                                                child: Container(
-                                                  height: 140,
-                                                  width: 140,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    image: DecorationImage(
-                                                      fit: BoxFit.cover,
-                                                      image: NetworkImage(
-                                                        nn[itemIndex]
-                                                            ["picture_url"],
+                                        return TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Details2(
+                                                            imagePath: nn[
+                                                                    itemIndex]
+                                                                ["picture_url"],
+                                                            result: nn,
+                                                            index: itemIndex)));
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 0),
+                                                  child: Container(
+                                                    height: 125,
+                                                    width: 125,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      image: DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: NetworkImage(
+                                                          nn[itemIndex]
+                                                              ["picture_url"],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  right: 0,
-                                                ),
-                                                child: Padding(
+                                                Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          top: 10, left: 25),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      // Text(
-                                                      //   nn[itemIndex]["title"],
-                                                      //   textAlign:
-                                                      //       TextAlign.start,
-                                                      //   style: TextStyle(
-                                                      //     fontWeight:
-                                                      //         FontWeight.bold,
-                                                      //   ),
-                                                      // ),
-                                                      Row(
-                                                        children: [
-                                                          Icon(Icons
-                                                              .calendar_month),
-                                                          Text(
-                                                            formatTimestamp(
-                                                                nn[itemIndex]
-                                                                        ["time"]
-                                                                    .seconds),
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    ],
+                                                    right: 0,
                                                   ),
-                                                ),
-                                              )
-                                            ],
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 10, left: 25),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        // Text(
+                                                        //   nn[itemIndex]["title"],
+                                                        //   textAlign:
+                                                        //       TextAlign.start,
+                                                        //   style: TextStyle(
+                                                        //     fontWeight:
+                                                        //         FontWeight.bold,
+                                                        //   ),
+                                                        // ),
+                                                        Row(
+                                                          children: [
+                                                            Icon(Icons
+                                                                .calendar_month),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 5),
+                                                              child: Text(
+                                                                formatTimestamp(
+                                                                    nn[itemIndex]
+                                                                            [
+                                                                            "time"]
+                                                                        .seconds),
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  // Handle loading or error state
-                                  return CircularProgressIndicator(); // You can replace this with an appropriate loading widget
-                                }
-                              },
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    // Handle loading or error state
+                                    return CircularProgressIndicator(); // You can replace this with an appropriate loading widget
+                                  }
+                                },
+                              ),
                             ),
                           ),
 
@@ -963,7 +1061,7 @@ class _HomePageState extends State<HomePage> {
 
                           //
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.only(top: 30),
                             child: Container(
                               height: 180,
                               width: MediaQuery.of(context).size.width * 1,
@@ -985,6 +1083,69 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, left: 10),
+                            child: Text("Intresting for you",
+                                style: GoogleFonts.roboto(
+                                    textStyle: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w600,
+                                ))),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Column(
+                              children: [
+                                CarouselSlider(
+                                  items: images.map((image) {
+                                    return Builder(
+                                      builder: (BuildContext context) {
+                                        return Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image:
+                                                  AssetImage("images/2d.png"),
+                                              fit: BoxFit.fitHeight,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }).toList(),
+                                  options: CarouselOptions(
+                                    height:
+                                        200.0, // Adjust the height as needed
+                                    // Enable auto-play
+                                    enlargeCenterPage: true,
+                                    onPageChanged: (index, reason) {
+                                      setState(() {
+                                        _currentIndex1 = index;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: DotsIndicator(
+                                    dotsCount: images.length,
+                                    position: _currentIndex1.toDouble(),
+                                    decorator: DotsDecorator(
+                                      size: const Size.square(
+                                          8.0), // Adjust the dot size
+                                      activeSize: const Size(20.0,
+                                          8.0), // Adjust the active dot size
+                                      activeColor:
+                                          Colors.blue, // Color of active dot
+                                      spacing: EdgeInsets.all(
+                                          4.0), // Adjust the spacing between dots
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -1003,11 +1164,11 @@ class _HomePageState extends State<HomePage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: "",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: 'Search',
+            label: "",
           ),
           BottomNavigationBarItem(
             icon: SizedBox(
@@ -1029,7 +1190,7 @@ class _HomePageState extends State<HomePage> {
                 backgroundColor: Colors.blue,
               ),
             ),
-            label: 'Camera',
+            label: "",
           ),
           BottomNavigationBarItem(
             icon: IconButton(
@@ -1042,11 +1203,20 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            label: 'Reports',
+            label: "",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: IconButton(
+              icon: Icon(Icons.person),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Profile(),
+                  ),
+                );
+              },
+            ),
+            label: "",
           ),
         ],
         onTap: (index) {
